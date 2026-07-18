@@ -4,7 +4,7 @@ Questling turns study PDFs into a source-grounded fantasy quest. This prototype 
 
 1. Upload a PDF or open the supplied environmental-science demo.
 2. Generate six questions with the OpenAI Responses API.
-3. Explore a realm with a keyboard/touch-movable avatar and following companion.
+3. Explore a 2D realm by clicking labeled landmarks and menu destinations.
 4. Power battle actions by answering questions.
 5. Open the cited evidence during combat.
 6. Review every answer and citation after the encounter.
@@ -21,6 +21,12 @@ npm run dev
 Open `http://localhost:3000`.
 
 The demo realm does not require an API call. Uploading a PDF requires `OPENAI_API_KEY`. `OPENAI_MODEL` defaults to `gpt-5.6-terra` and can be changed in the server environment.
+
+## 24-screen storyboard
+
+The prototype follows the reference storyboard screen for screen: Create Your Avatar, Build Your World, Realm Awakening, First Steps, Quest Journal, Discover & Learn, Tactical Encounter, Quest Complete, Companion Sanctuary, Companion Codex, Bond Path, Team Setup, Source Library, Source Details, Mastery Atlas, Answer Review, Avatar & Wardrobe, Inventory & Relics, Journey Progress, Settings & Accessibility, Begin Your Journey, Pause & Navigation, Source Needs Attention, and Account & Privacy.
+
+The fantasy environment plates contain no baked-in interface. Tabs, creature cards, quest markers, source rows, inventory slots, toggles, sliders, confirmations, battle commands, and navigation buttons are real HTML controls with visible state changes.
 
 ## Verification
 
@@ -53,6 +59,6 @@ OpenAI's file-input documentation explains that PDF inputs include extracted tex
 - Generated packs persist in browser `localStorage`; there is not yet a database or account system.
 - The included limiter is intentionally lightweight and process-local. Add account authentication and a shared rate-limit store before a public, multi-instance deployment.
 - Uploaded PDF bytes are passed directly to OpenAI and are not stored by this app.
-- The realm is a 2.5D interactive prototype, not a full 3D game engine.
+- The realm is a 2D point-and-click prototype, not a full 3D game engine.
 - OCR confidence is enforced by prompting and evidence requirements, not a second independent OCR service.
 - The model can still misread handwriting. Learners should be able to report questionable items before a production release.

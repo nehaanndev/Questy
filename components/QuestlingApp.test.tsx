@@ -1,57 +1,87 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
-import QuestlingApp from "./QuestlingApp";
+import QuestlingApp, { SCREEN_IDS } from "./QuestlingApp";
 
-describe("Questling vertical slice", () => {
+describe("Questling 24-screen interactive storyboard", () => {
   beforeEach(() => window.localStorage.clear());
 
-  it("starts in the source library with PDF and demo choices", () => {
-    render(<QuestlingApp />);
-    expect(screen.getByRole("heading", { name: /begin with a trusted source/i })).toBeInTheDocument();
-    expect(screen.getAllByText(/upload a pdf/i).length).toBeGreaterThan(0);
-    expect(screen.getByRole("button", { name: /enter demo realm/i })).toBeInTheDocument();
+  it("defines the exact 24 unique implementation screens", () => {
+    expect(SCREEN_IDS).toHaveLength(24);
+    expect(new Set(SCREEN_IDS).size).toBe(24);
+    expect(SCREEN_IDS).toContain("avatar-create");
+    expect(SCREEN_IDS).toContain("source-attention");
+    expect(SCREEN_IDS).toContain("account");
   });
 
-  it("enters a movable realm from the demo scenario", () => {
+  it("starts at the title and supports the onboarding controls", () => {
     render(<QuestlingApp />);
-    fireEvent.click(screen.getByRole("button", { name: /enter demo realm/i }));
-    expect(screen.getByLabelText(/exploration realm/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/your movable avatar/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/lumi following/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /approach the archive gate/i })).toBeDisabled();
+    expect(screen.getByTestId("screen-title")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /create account/i }));
+    expect(screen.getByTestId("screen-avatar-create")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("tab", { name: "Hair" }));
+    fireEvent.click(screen.getByRole("button", { name: /braided/i }));
+    expect(screen.getByText(/selected hair:/i)).toHaveTextContent("Braided");
+
+    fireEvent.click(screen.getByRole("button", { name: /continue/i }));
+    expect(screen.getByTestId("screen-world-builder")).toBeInTheDocument();
   });
 
-  it("moves the world camera and reveals a new area as the avatar travels", () => {
+  it("builds the demo realm and enters point-and-click exploration", () => {
     render(<QuestlingApp />);
-    fireEvent.click(screen.getByRole("button", { name: /enter demo realm/i }));
-    const camera = screen.getByTestId("exploration-camera");
-    const initialTransform = camera.style.transform;
-    expect(screen.getAllByText("Forgotten Cloister").length).toBeGreaterThan(0);
-
-    const moveRight = screen.getByRole("button", { name: /move right/i });
-    for (let step = 0; step < 5; step += 1) fireEvent.pointerDown(moveRight);
-
-    expect(camera.style.transform).not.toBe(initialTransform);
-    expect(screen.getAllByText("Mosswater Crossing").length).toBeGreaterThan(0);
-    expect(screen.getByText("Moonwell")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /create account/i }));
+    fireEvent.click(screen.getByRole("button", { name: /continue/i }));
+    fireEvent.click(screen.getByRole("button", { name: /build demo realm/i }));
+    expect(screen.getByTestId("screen-processing")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /enter the realm/i }));
+    expect(screen.getByTestId("screen-first-steps")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /archive gate/i })).toBeInTheDocument();
   });
 
-  it("starts a battle and locks answers after one selection", () => {
+  it("uses real hotspots and journal buttons to start a grounded battle", () => {
     render(<QuestlingApp />);
-    fireEvent.click(screen.getByRole("button", { name: /enter demo realm/i }));
-    const moveRight = screen.getByRole("button", { name: /move right/i });
-    const moveUp = screen.getByRole("button", { name: /move up/i });
-    for (let step = 0; step < 14; step += 1) fireEvent.pointerDown(moveRight);
-    for (let step = 0; step < 8; step += 1) fireEvent.pointerDown(moveUp);
-    const encounter = screen.getByRole("button", { name: /enter encounter/i });
-    expect(encounter).toBeEnabled();
-    fireEvent.click(encounter);
-    expect(screen.getByLabelText(/tactical study encounter/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "STRIKE" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: /continue as guest/i }));
+    fireEvent.click(screen.getByRole("button", { name: /quest journal/i }));
+    expect(screen.getByTestId("screen-quest-journal")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /start encounter/i }));
+    expect(screen.getByTestId("screen-battle")).toBeInTheDocument();
 
-    const answer = screen.getByRole("button", { name: /the dose lethal to 50%/i });
-    fireEvent.click(answer);
-    expect(screen.getByText(/focus aligned/i)).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: /safe daily dose|exactly 50 organs|removed after 50 minutes/i })[0]).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: /the dose lethal to 50%/i }));
+    expect(screen.getByRole("status")).toHaveTextContent(/focus aligned/i);
+    fireEvent.click(screen.getByRole("button", { name: /continue/i }));
+    expect(screen.getByText(/question 2 of 6/i)).toBeInTheDocument();
+  });
+
+  it("makes companion collection, filtering, and team controls interactive", () => {
+    render(<QuestlingApp />);
+    fireEvent.click(screen.getByRole("button", { name: /continue as guest/i }));
+    fireEvent.click(screen.getByRole("button", { name: /sanctuary/i }));
+    fireEvent.click(screen.getByRole("button", { name: /open codex/i }));
+    expect(screen.getByTestId("screen-codex")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("tab", { name: "Water" }));
+    fireEvent.click(screen.getByRole("button", { name: /shellback/i }));
+    expect(screen.getByRole("heading", { name: "Shellback" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /add to team/i }));
+    expect(screen.getByRole("button", { name: /remove from team/i })).toBeInTheDocument();
+  });
+
+  it("supports settings toggles and a real confirmation flow", () => {
+    render(<QuestlingApp />);
+    fireEvent.click(screen.getByRole("button", { name: /sign in/i }));
+    expect(screen.getByTestId("screen-source-library")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /open pause menu/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^⚙ settings$/i }));
+    expect(screen.getByTestId("screen-settings")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("checkbox", { name: /larger text/i }));
+    fireEvent.click(screen.getByRole("button", { name: /save settings/i }));
+    expect(window.localStorage.getItem("questling-settings")).toContain("largeText");
+
+    fireEvent.click(screen.getByRole("tab", { name: "Privacy" }));
+    fireEvent.click(screen.getByRole("button", { name: /open account/i }));
+    fireEvent.click(screen.getByRole("button", { name: /delete account/i }));
+    expect(screen.getByRole("dialog", { name: /confirm action/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /cancel/i }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });
