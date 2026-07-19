@@ -114,7 +114,7 @@ export function AvatarEditor() {
           <div className={styles.pathGrid} role="group" aria-label="Choose a path or career">
             {PATHS.map((path, index) => (
               <button key={path.id} type="button" className={avatarChoice === index ? styles.selectedPath : ""} aria-pressed={avatarChoice === index} onClick={() => setAvatarChoice(index)}>
-                <span className={styles.pathPortrait}><Image src={path.src} alt="" fill sizes="150px" /></span>
+                <span className={styles.pathPortrait}><Image src={path.src} alt="" fill loading="eager" sizes="150px" /></span>
                 <strong>{path.name}</strong><small>{path.role}</small>
               </button>
             ))}
