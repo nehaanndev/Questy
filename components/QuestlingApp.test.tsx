@@ -13,9 +13,27 @@ describe("Questling 24-screen interactive storyboard", () => {
     expect(SCREEN_IDS).toContain("account");
   });
 
-  it("starts at the title and supports the onboarding controls", () => {
+  it("starts at First Steps and exposes the complete home hub", () => {
     render(<QuestlingApp />);
+    expect(screen.getByTestId("screen-first-steps")).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: /realm destinations/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /source library/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /mastery atlas/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /account & onboarding/i }));
     expect(screen.getByTestId("screen-title")).toBeInTheDocument();
+  });
+
+  it("uses the Questling brand as a consistent home action", () => {
+    render(<QuestlingApp />);
+    fireEvent.click(screen.getByRole("button", { name: /source library/i }));
+    expect(screen.getByTestId("screen-source-library")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /go to first steps home/i }));
+    expect(screen.getByTestId("screen-first-steps")).toBeInTheDocument();
+  });
+
+  it("keeps the complete onboarding controls accessible from home", () => {
+    render(<QuestlingApp />);
+    fireEvent.click(screen.getByRole("button", { name: /account & onboarding/i }));
     fireEvent.click(screen.getByRole("button", { name: /create account/i }));
     expect(screen.getByTestId("screen-avatar-create")).toBeInTheDocument();
 
@@ -29,6 +47,7 @@ describe("Questling 24-screen interactive storyboard", () => {
 
   it("builds the demo realm and enters point-and-click exploration", () => {
     render(<QuestlingApp />);
+    fireEvent.click(screen.getByRole("button", { name: /account & onboarding/i }));
     fireEvent.click(screen.getByRole("button", { name: /create account/i }));
     fireEvent.click(screen.getByRole("button", { name: /continue/i }));
     fireEvent.click(screen.getByRole("button", { name: /build demo realm/i }));
@@ -40,21 +59,19 @@ describe("Questling 24-screen interactive storyboard", () => {
 
   it("uses real hotspots and journal buttons to start a grounded battle", () => {
     render(<QuestlingApp />);
-    fireEvent.click(screen.getByRole("button", { name: /continue as guest/i }));
     fireEvent.click(screen.getByRole("button", { name: /quest journal/i }));
     expect(screen.getByTestId("screen-quest-journal")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /start encounter/i }));
     expect(screen.getByTestId("screen-battle")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /the dose lethal to 50%/i }));
-    expect(screen.getByRole("status")).toHaveTextContent(/focus aligned/i);
+    expect(screen.getByText(/focus aligned/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /continue/i }));
     expect(screen.getByText(/question 2 of 6/i)).toBeInTheDocument();
   });
 
   it("makes companion collection, filtering, and team controls interactive", () => {
     render(<QuestlingApp />);
-    fireEvent.click(screen.getByRole("button", { name: /continue as guest/i }));
     fireEvent.click(screen.getByRole("button", { name: /sanctuary/i }));
     fireEvent.click(screen.getByRole("button", { name: /open codex/i }));
     expect(screen.getByTestId("screen-codex")).toBeInTheDocument();
@@ -68,6 +85,7 @@ describe("Questling 24-screen interactive storyboard", () => {
 
   it("supports settings toggles and a real confirmation flow", () => {
     render(<QuestlingApp />);
+    fireEvent.click(screen.getByRole("button", { name: /account & onboarding/i }));
     fireEvent.click(screen.getByRole("button", { name: /sign in/i }));
     expect(screen.getByTestId("screen-source-library")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /open pause menu/i }));

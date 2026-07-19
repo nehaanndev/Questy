@@ -1,3 +1,5 @@
+@import "./polish.css";
+
 :root {
   --ink: #07110f;
   --panel: rgba(7, 22, 20, 0.92);
