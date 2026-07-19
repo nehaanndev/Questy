@@ -37,9 +37,8 @@ describe("Questling 24-screen interactive storyboard", () => {
     fireEvent.click(screen.getByRole("button", { name: /create account/i }));
     expect(screen.getByTestId("screen-avatar-create")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("tab", { name: "Hair" }));
-    fireEvent.click(screen.getByRole("button", { name: /braided/i }));
-    expect(screen.getByText(/selected hair:/i)).toHaveTextContent("Braided");
+    fireEvent.click(screen.getByRole("button", { name: /archive mage/i }));
+    expect(screen.getByText(/selected career:/i)).toHaveTextContent("Archive Mage");
 
     fireEvent.click(screen.getByRole("button", { name: /continue/i }));
     expect(screen.getByTestId("screen-world-builder")).toBeInTheDocument();

@@ -10,9 +10,7 @@
 
 .preview {
   position: relative;
-  display: grid;
   min-height: 660px;
-  place-items: end center;
   overflow: hidden;
   border-bottom: 1px solid rgb(230 195 109 / 28%);
   background: radial-gradient(ellipse at 50% 72%, rgb(62 163 131 / 12%), transparent 55%);
@@ -22,175 +20,46 @@
   position: absolute;
   inset: -1.5rem 0 0;
   margin: 0;
-  overflow: hidden;
   filter: drop-shadow(0 2rem 2.2rem rgb(0 0 0 / 66%));
-  isolation: isolate;
 }
 
-.avatarImage,
-.colorLayer {
+.avatarImage {
   object-fit: contain;
   object-position: 50% 100%;
-  transition: transform 280ms ease, object-position 280ms ease;
 }
-
-.avatarImage { z-index: 1; }
-
-.colorLayer {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  -webkit-mask-image: var(--feature-mask), var(--avatar-alpha);
-  -webkit-mask-composite: source-in;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center bottom;
-  -webkit-mask-size: contain;
-  mask-image: var(--feature-mask), var(--avatar-alpha);
-  mask-composite: intersect;
-  mask-repeat: no-repeat;
-  mask-position: center bottom;
-  mask-size: contain;
-  mix-blend-mode: color;
-}
-
-.skinLayer {
-  background: var(--skin-tone);
-  opacity: 0.92;
-}
-
-.eyeLayer {
-  background: var(--eye-color);
-  opacity: 0.95;
-}
-
-.lipLayer {
-  background: var(--lip-color);
-  opacity: 0.88;
-}
-
-.avatar[data-path="pathfinder"] { --avatar-alpha: url("/assets/characters/pathfinder-avatar-cutout.png"); }
-.avatar[data-path="archiveMage"] { --avatar-alpha: url("/assets/characters/archive-mage-avatar-cutout.png"); }
-.avatar[data-path="guardian"] { --avatar-alpha: url("/assets/characters/guardian-avatar-cutout.png"); }
-.avatar[data-path="pathfinder"] .skinLayer { --feature-mask: url("/assets/characters/pathfinder-skin-mask.svg"); }
-.avatar[data-path="pathfinder"] .eyeLayer { --feature-mask: url("/assets/characters/pathfinder-eye-mask.svg"); }
-.avatar[data-path="pathfinder"] .lipLayer { --feature-mask: url("/assets/characters/pathfinder-lip-mask.svg"); }
-.avatar[data-path="archiveMage"] .skinLayer { --feature-mask: url("/assets/characters/archive-mage-skin-mask.svg"); }
-.avatar[data-path="archiveMage"] .eyeLayer { --feature-mask: url("/assets/characters/archive-mage-eye-mask.svg"); }
-.avatar[data-path="archiveMage"] .lipLayer { --feature-mask: url("/assets/characters/archive-mage-lip-mask.svg"); }
-.avatar[data-path="guardian"] .skinLayer { --feature-mask: url("/assets/characters/guardian-skin-mask.svg"); }
-.avatar[data-path="guardian"] .eyeLayer { --feature-mask: url("/assets/characters/guardian-eye-mask.svg"); }
-.avatar[data-path="guardian"] .lipLayer { --feature-mask: url("/assets/characters/guardian-lip-mask.svg"); }
-
-.faceZoom .avatarImage,
-.faceZoom .colorLayer {
-  object-position: 50% 0;
-  transform: scale(3);
-  transform-origin: 50% 0;
-}
-
-.faceZoom[data-eye-shape="1"] .eyeLayer { filter: saturate(1.15) brightness(1.12); }
-.faceZoom[data-eye-shape="2"] .eyeLayer { filter: saturate(1.25); }
-.faceZoom[data-eye-shape="3"] .eyeLayer { opacity: 0.72; }
-
-.previewHint {
-  position: relative;
-  z-index: 4;
-  display: grid;
-  min-width: 230px;
-  gap: 0.2rem;
-  margin-bottom: 0.8rem;
-  padding: 0.65rem 1rem;
-  text-align: center;
-  border: 1px solid rgb(230 195 109 / 34%);
-  border-radius: 999px;
-  background: rgb(3 18 16 / 78%);
-  backdrop-filter: blur(10px);
-}
-
-.previewHint span { color: #f2d68c; font-family: Georgia, serif; }
-.previewHint small { color: #91aaa1; }
 
 .panel {
   align-self: center;
+  display: grid;
+  gap: 1rem;
   max-height: calc(100vh - 145px);
-  overflow: auto;
+  padding: 1.15rem;
 }
 
-.faceControls { display: grid; gap: 1rem; }
-
-.faceSections {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.45rem;
+.careerTab {
+  width: fit-content;
+  min-width: 8rem;
+  padding: 0.7rem 1.25rem;
+  color: #ffe29a;
+  text-align: center;
+  font: 500 1rem Georgia, serif;
+  border-bottom: 2px solid #f7db8b;
+  background: linear-gradient(transparent, rgb(217 181 91 / 8%));
 }
 
-.faceSections button {
-  min-height: 42px;
-  padding: 0.55rem 0.5rem;
-  color: #afc3ba;
-  font: 500 0.8rem/1.2 Georgia, serif;
-  border: 1px solid rgb(217 181 91 / 24%);
-  border-radius: 0.45rem;
-  background: rgb(7 29 25 / 72%);
-  cursor: pointer;
-}
+.panel h2 { margin: 0; }
+.intro { margin: -0.45rem 0 0; color: #9fb7ae; }
 
-.faceSections button:hover,
-.faceSections .activeSection {
-  color: #ffe5a2;
-  border-color: #e1bd63;
-  background: rgb(25 65 53 / 90%);
-}
-
-.optionGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.55rem;
-}
-
-.optionGrid button {
-  display: grid;
-  min-height: 86px;
-  place-items: center;
-  gap: 0.4rem;
-  padding: 0.65rem;
-  color: #d8ccb0;
-  border: 1px solid rgb(217 181 91 / 26%);
-  border-radius: 0.55rem;
-  background: rgb(7 28 24 / 82%);
-  cursor: pointer;
-}
-
-.optionGrid button:hover,
-.optionGrid .selectedOption {
-  color: #ffe8aa;
-  border-color: #efd071;
-  background: rgb(27 67 55 / 92%);
-  box-shadow: inset 0 0 1.5rem rgb(230 195 109 / 7%), 0 0 1.1rem rgb(91 218 185 / 9%);
-}
-
-.optionGrid i {
-  width: 2.3rem;
-  height: 2.3rem;
-  border: 2px solid #e3c273;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 3px rgb(4 18 16), 0 0 0 1px rgb(255 255 255 / 12%);
-}
-
-.optionGrid span { color: #e3c273; font-size: 1.6rem; }
-.optionGrid b { font-size: 0.78rem; }
-
-.pathGrid {
+.careerGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
-.pathGrid button {
+.careerGrid button {
   display: grid;
   min-width: 0;
-  gap: 0.28rem;
+  gap: 0.35rem;
   padding: 0;
   overflow: hidden;
   color: #cabd9d;
@@ -201,18 +70,23 @@
   cursor: pointer;
 }
 
-.pathGrid .selectedPath { border-color: #efca68; box-shadow: 0 0 1.5rem rgb(109 223 191 / 14%); }
-.pathGrid strong { padding: 0.1rem 0.65rem 0; color: #eed28a; font: 500 0.95rem Georgia, serif; }
-.pathGrid small { padding: 0 0.65rem 0.65rem; color: #8fa69e; }
-
-.pathPortrait {
-  position: relative;
-  display: block;
-  height: 145px;
-  background: radial-gradient(circle at 50% 70%, rgb(39 110 89 / 22%), transparent 62%);
+.careerGrid button:hover,
+.careerGrid .selectedCareer {
+  border-color: #efca68;
+  box-shadow: 0 0 1.5rem rgb(109 223 191 / 14%);
 }
 
-.pathPortrait img { object-fit: contain; object-position: center 18%; transform: scale(1.55); }
+.careerGrid strong { padding: 0.1rem 0.65rem 0; color: #eed28a; font: 500 0.95rem Georgia, serif; }
+.careerGrid small { padding: 0 0.65rem 0.7rem; color: #8fa69e; }
+
+.careerPortrait {
+  position: relative;
+  display: block;
+  height: clamp(210px, 28vh, 310px);
+  background: radial-gradient(circle at 50% 72%, rgb(39 110 89 / 22%), transparent 62%);
+}
+
+.careerPortrait img { object-fit: contain; object-position: center bottom; }
 
 .panelFooter {
   display: flex;
@@ -234,12 +108,7 @@
 
 @media (max-width: 620px) {
   .preview { min-height: 470px; }
-  .faceSections, .optionGrid { grid-template-columns: repeat(2, 1fr); }
-  .pathGrid { grid-template-columns: 1fr; }
-  .pathPortrait { height: 110px; }
+  .careerGrid { grid-template-columns: 1fr; }
+  .careerPortrait { height: 260px; }
   .panelFooter { align-items: stretch; flex-direction: column; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .avatarImage, .colorLayer { transition: none; }
 }

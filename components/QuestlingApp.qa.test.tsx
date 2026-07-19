@@ -102,7 +102,7 @@ describe("Questling release journeys", () => {
     expect(screen.getByLabelText(/add source pdf/i)).toBeInTheDocument();
   });
 
-  it("customizes only layered avatar traits and exposes the new editor sections", () => {
+  it("uses a focused career picker with complete avatar options", () => {
     render(<QuestlingApp />);
     fireEvent.click(screen.getByRole("button", { name: /account & onboarding/i }));
     fireEvent.click(screen.getByRole("button", { name: /create account/i }));
@@ -113,28 +113,11 @@ describe("Questling release journeys", () => {
     expect(within(avatarScreen).queryByText(/selected path/i)).not.toBeInTheDocument();
 
     const preview = screen.getByTestId("avatar-editor-preview");
-    expect(preview.querySelector('[data-layer="skin"]')).toBeInTheDocument();
-    expect(preview.querySelector('[data-layer="eyes"]')).toBeInTheDocument();
-    expect(preview.querySelector('[data-layer="lips"]')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "Porcelain" }));
-    expect(preview).toHaveAttribute("data-skin-tone", "0");
-    expect(preview.getAttribute("style")).toContain("--skin-tone: #f1c6a5");
-
-    for (const subsection of ["Eye color", "Lip color", "Eye shape", "Nose shape", "Eyebrow shape"]) {
-      expect(screen.getByRole("button", { name: subsection })).toBeInTheDocument();
-    }
-    fireEvent.click(screen.getByRole("button", { name: "Eye shape" }));
-    fireEvent.click(screen.getByRole("button", { name: "Round" }));
-    expect(preview).toHaveAttribute("data-eye-shape", "1");
-
-    fireEvent.click(screen.getByRole("tab", { name: "Path / Career" }));
     fireEvent.click(screen.getByRole("button", { name: /archive mage/i }));
-    expect(preview).toHaveAttribute("data-path", "archiveMage");
-
-    fireEvent.click(screen.getByRole("tab", { name: "Gender" }));
-    fireEvent.click(screen.getByRole("button", { name: "Woman" }));
-    expect(screen.getByText(/selected gender:/i)).toHaveTextContent("Woman");
-    expect(screen.queryByRole("tab", { name: "Voice" })).not.toBeInTheDocument();
+    expect(preview).toHaveAttribute("data-career", "archiveMage");
+    expect(screen.getByText(/selected career:/i)).toHaveTextContent("Archive Mage");
+    expect(screen.queryByRole("tab")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Porcelain" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/full character view/i)).not.toBeInTheDocument();
   });
 });
