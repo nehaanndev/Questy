@@ -29,7 +29,7 @@ export function SceneFrame({
         <button className="story-brand" onClick={onHome} aria-label="Go to First Steps home">
           <Rune small /> Questling
         </button>
-        <h1><span>{String(number).padStart(2, "0")}</span> {SCREEN_TITLES[screen]}</h1>
+        <h1>{screen !== "avatar-create" && <span>{String(number).padStart(2, "0")}</span>} {SCREEN_TITLES[screen]}</h1>
         <div className="story-heading__tools">
           {status && <span className="story-status" role="status" aria-live="polite">● {status}</span>}
           {onPause && screen !== "pause" && (

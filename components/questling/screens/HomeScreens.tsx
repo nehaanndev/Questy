@@ -1,7 +1,7 @@
 import { PROCESSING_STEPS } from "../core/config";
 import { useQuestling } from "../core/QuestlingProvider";
-import { ExplorerPair, Meter, Rune, Tabs } from "../core/primitives";
-import { AVATAR_ART, QuestlingArt, QuestlingArtCard } from "../art/QuestlingArt";
+import { ExplorerPair, Meter, Rune } from "../core/primitives";
+import { AvatarEditor } from "../avatar/AvatarEditor";
 
 export function TitleScreen() {
   const { navigate, setNotice } = useQuestling();
@@ -23,43 +23,7 @@ export function TitleScreen() {
 }
 
 export function AvatarCreateScreen() {
-  const { avatarTab, setAvatarTab, avatarChoice, setAvatarChoice, navigate } = useQuestling();
-  const options = avatarTab === "Face"
-    ? ["Warm", "Deep", "Fair", "Olive"]
-    : avatarTab === "Hair"
-      ? ["Tousled", "Braided", "Cropped", "Wavy"]
-      : avatarTab === "Outfit"
-        ? ["Archive", "Verdant", "Scholar", "Night"]
-        : ["Calm", "Bright", "Soft", "Bold"];
-  const icon = avatarTab === "Face" ? "◉" : avatarTab === "Hair" ? "♟" : avatarTab === "Outfit" ? "♙" : "♫";
-  const selectedAvatar = AVATAR_ART[avatarChoice % AVATAR_ART.length];
-
-  return (
-    <div className="split-layout">
-      <div className="avatar-showcase">
-        <QuestlingArt id={selectedAvatar.id} crop="full" priority sizes="(max-width: 900px) 90vw, 520px" />
-        <div><p className="eyebrow">SELECTED PATH</p><h2>{selectedAvatar.name}</h2><span>{selectedAvatar.role}</span></div>
-      </div>
-      <div className="story-panel avatar-panel">
-        <Tabs items={["Face", "Hair", "Outfit", "Voice"]} active={avatarTab} onChange={(tab) => { setAvatarTab(tab); setAvatarChoice(0); }} label="Avatar options" />
-        {avatarTab === "Outfit" ? (
-          <div className="avatar-art-grid">
-            {AVATAR_ART.map((avatar, index) => <QuestlingArtCard key={avatar.id} id={avatar.id} crop="portrait" selected={avatarChoice === index} onClick={() => setAvatarChoice(index)} />)}
-          </div>
-        ) : (
-          <div className="choice-grid">
-            {options.map((option, index) => (
-              <button key={option} className={avatarChoice === index ? "choice-card active" : "choice-card"} onClick={() => setAvatarChoice(index)}>
-                <span>{icon}</span><b>{option}</b>
-              </button>
-            ))}
-          </div>
-        )}
-        <p className="selection-note">Selected {avatarTab.toLowerCase()}: <strong>{options[avatarChoice] ?? options[0]}</strong></p>
-        <button className="story-button story-button--primary" onClick={() => navigate("world-builder")}>✦ Continue ✦</button>
-      </div>
-    </div>
-  );
+  return <AvatarEditor />;
 }
 
 export function WorldBuilderScreen() {
