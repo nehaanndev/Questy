@@ -1,0 +1,37 @@
+{
+  "name": "questling",
+  "version": "0.1.0",
+  "private": true,
+  "overrides": {
+    "postcss": "8.5.19"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "smoke:upload": "tsx scripts/smoke-upload.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "next": "latest",
+    "openai": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "jsdom": "latest",
+    "tsx": "^4.23.1",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}
